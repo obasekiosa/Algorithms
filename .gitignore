@@ -1,0 +1,6 @@
+*.zip
+/*/extras
+# *.class
+/*/*/.lift
+/*/*/.idea
+*.iml
