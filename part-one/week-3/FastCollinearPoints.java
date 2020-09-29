@@ -16,82 +16,80 @@ import java.util.Arrays;
 
 public class FastCollinearPoints {
 
-    private int numberOfLineSegments;
-    private LineSegment[] segmentsFound;
+    private final int numberOfLineSegments;
+    private final LineSegment[] segmentsFound;
 
     // finds all line segments containing 4 or more points
     public FastCollinearPoints(Point[] points) {
-
         if (points == null) throw new IllegalArgumentException();
 
-        for (int i = 0; i < points.length; i++)
+        Point[] tmpPoints = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
             if (points[i] == null) throw new IllegalArgumentException();
+            tmpPoints[i] = points[i];
+        }
 
+        Arrays.sort(tmpPoints);
+        for (int i = 0; i < tmpPoints.length - 1; i++)
+            if (tmpPoints[i].compareTo(tmpPoints[i + 1]) == 0) throw new IllegalArgumentException();
 
-        Arrays.sort(points);
-        for (int i = 0; i < points.length - 1; i++)
-            if (points[i].compareTo(points[i + 1]) == 0) throw new IllegalArgumentException();
+        LineSegment[] tempLineSegments = new LineSegment[points.length];
+        int segmentCount = 0;
 
-
-        double[] slopes = new double[points.length];
-
-        // Todo: optimize : if there are N points there are at most N/4 4-point min line segments
-        LineSegment[] temp = new LineSegment[points.length];
-        numberOfLineSegments = 0;
 
         for (int i = 0; i < points.length; i++) {
+            Point[] colinearPoints = new Point[points.length];
+            Arrays.sort(tmpPoints, points[i].slopeOrder());
 
-            for (int j = 0; j < points.length; j++) {
-                slopes[j] = points[i].slopeTo(points[j]);
-            }
+            colinearPoints[0] = tmpPoints[0]; // first point will always be part of any line found
+            int pointCount = 1;
+            boolean done = false;
 
-            Arrays.sort(slopes);
-            Arrays.sort(points, points[i].slopeOrder());
+            for (int j = 1; j < tmpPoints.length - 1; j++) {
+                if (tmpPoints[0].slopeOrder().compare(tmpPoints[j], tmpPoints[j + 1]) == 0) {
+                    colinearPoints[pointCount++] = tmpPoints[j];
 
-            Point start = points[0], end = points[0], current;
-            int count = 0;
-            // first point will always be the origin point (sepecial case of NEGATIVE INFINITY)
-            for (int j = 1; j < points.length - 1; j++) {
-                current = points[j];
-                count++;
-                if (start.compareTo(current) > 0) {
-                    start = current;
-                }
-                else if (end.compareTo(current) < 0) {
-                    end = current;
-                }
-
-                if (slopes[j] != slopes[j + 1]) {
-                    if (count >= 3) {
-                        temp[numberOfLineSegments++] = new LineSegment(start, end);
-
+                    if (j + 1 == points.length - 1) {
+                        colinearPoints[pointCount++] = tmpPoints[j + 1];
+                        done = true;
                     }
-                    count = 0;
-                    end = points[0];
-                    start = points[0];
+                }
+                else {
+                    colinearPoints[pointCount++] = tmpPoints[j];
+                    done = true;
                 }
 
-            }
+                if (done) {
+                    if (pointCount >= 4) {
+                        Arrays.sort(colinearPoints, 0, pointCount);
 
-            if (start.compareTo(points[0]) != 0
-                    && end.compareTo(points[0]) != 0) {
+                        if (tmpPoints[0].compareTo(colinearPoints[0]) == 0) {
 
-                if (start.compareTo(points[points.length - 1]) > 0) {
-                    start = points[points.length - 1];
+                            if (segmentCount == tempLineSegments.length - 1) {
+                                LineSegment[] tmp = new LineSegment[tempLineSegments.length * 2];
+                                for (int index = 0; index < tempLineSegments.length; index++) {
+                                    tmp[index] = tempLineSegments[index];
+                                }
+                                tempLineSegments = tmp;
+                            }
+                            tempLineSegments[segmentCount++] = new LineSegment(
+                                    colinearPoints[0], colinearPoints[
+                                    pointCount - 1]);
+                        }
+                    }
+                    done = false;
+                    colinearPoints = new Point[points.length];
+                    colinearPoints[0] = tmpPoints[0];
+                    pointCount = 1;
                 }
-                else if (end.compareTo(points[points.length - 1]) < 0) {
-                    end = points[points.length - 1];
-                }
-
-                temp[numberOfLineSegments++] = new LineSegment(start, end);
             }
         }
 
-        segmentsFound = new LineSegment[numberOfLineSegments];
-        for (int i = 0; i < numberOfLineSegments; i++) {
-            segmentsFound[i] = temp[i];
+        this.numberOfLineSegments = segmentCount;
+        this.segmentsFound = new LineSegment[this.numberOfLineSegments];
+        for (int i = 0; i < this.numberOfLineSegments; i++) {
+            this.segmentsFound[i] = tempLineSegments[i];
         }
-
     }
 
     // the number of line segments
@@ -99,34 +97,15 @@ public class FastCollinearPoints {
         return this.numberOfLineSegments;
     }
 
+
     // the line segments
     public LineSegment[] segments() {
-        if (this.segmentsFound.length == 0) return this.segmentsFound;
-        LineSegment[] temp = new LineSegment[this.segmentsFound.length];
-        int k = 0;
-
-        for (int i = 0; i < this.segmentsFound.length; i++) {
-            if (isUnique(temp, k, this.segmentsFound[i])) {
-                temp[k++] = this.segmentsFound[i];
-            }
+        LineSegment[] result = new LineSegment[this.numberOfLineSegments];
+        for (int i = 0; i < this.numberOfLineSegments; i++) {
+            result[i] = this.segmentsFound[i];
         }
-        LineSegment[] result = new LineSegment[k];
-        for (int i = 0; i < k; i++) {
-            result[i] = temp[i];
-        }
-
         return result;
     }
-
-    private boolean isUnique(LineSegment[] s, int len, LineSegment l) {
-        for (int i = 0; i < len; i++) {
-            if (l.toString().equals(s[i].toString())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     /**
      * Unit tests the FastCollinearPoints method.

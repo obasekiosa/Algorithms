@@ -16,82 +16,65 @@ import java.util.Arrays;
 
 public class BruteCollinearPoints {
 
-    private int numberOfLineSegments;
-    private LineSegment[] segmentsFound;
+    private final int numberOfLineSegments;
+    private final LineSegment[] segmentsFound;
 
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null) throw new IllegalArgumentException();
+
         for (int i = 0; i < points.length; i++)
             if (points[i] == null) throw new IllegalArgumentException();
 
-        int length = points.length;
-
-        segmentsFound = new LineSegment[length];
-        numberOfLineSegments = 0;
-        Point[] newPoints = new Point[points.length];
+        Point[] tmpPoints = new Point[points.length];
         for (int i = 0; i < points.length; i++)
-            newPoints[i] = points[i];
+            tmpPoints[i] = points[i];
 
-        Arrays.sort(newPoints);
+        Arrays.sort(tmpPoints);
 
-        for (int i = 0; i < points.length - 1; i++)
-            if (points[i].compareTo(points[i + 1]) == 0) throw new IllegalArgumentException();
+        LineSegment[] tmpLineSegment = new LineSegment[points.length];
+        int segmentCount = 0;
 
-        for (int i = 0; i < length; i++) {
-            for (int j = i + 1; j < length; j++) {
-                for (int k = j + 1; k < length; k++) {
-                    for (int l = k + 1; l < length; l++) {
-                        if (points[i].slopeOrder().compare(points[j], points[k]) == 0 &&
-                                points[j].slopeOrder().compare(points[k], points[l]) == 0) {
-                            segmentsFound[numberOfLineSegments++] = new LineSegment(points[i],
-                                                                                    points[l]);
+        for (int i = 0; i < tmpPoints.length - 1; i++)
+            if (tmpPoints[i].compareTo(tmpPoints[i + 1]) == 0) throw new IllegalArgumentException();
 
+        for (int i = 0; i < tmpPoints.length; i++) {
+            for (int j = i + 1; j < tmpPoints.length; j++) {
+                for (int k = j + 1; k < tmpPoints.length; k++) {
+                    if (tmpPoints[i].slopeOrder().compare(tmpPoints[j], tmpPoints[k]) == 0) {
+                        for (int m = k + 1; m < tmpPoints.length; m++) {
+                            if (tmpPoints[i].slopeOrder().compare(tmpPoints[j], tmpPoints[m])
+                                    == 0) {
+                                tmpLineSegment[segmentCount++] = new LineSegment(tmpPoints[i],
+                                                                                 tmpPoints[m]);
+                            }
                         }
                     }
                 }
             }
         }
 
-        LineSegment[] temp = new LineSegment[numberOfLineSegments];
-        for (int i = 0; i < numberOfLineSegments; i++) {
-            temp[i] = segmentsFound[i];
+
+        this.segmentsFound = new LineSegment[segmentCount];
+        this.numberOfLineSegments = segmentCount;
+        for (int i = 0; i < segmentCount; i++) {
+            this.segmentsFound[i] = tmpLineSegment[i];
         }
-        segmentsFound = temp;
 
     }
 
     // the number of line segments
     public int numberOfSegments() {
-        return numberOfLineSegments;
+        return this.numberOfLineSegments;
     }
 
     // the line segments
     public LineSegment[] segments() {
-        if (this.segmentsFound.length == 0) return this.segmentsFound;
-        LineSegment[] temp = new LineSegment[this.segmentsFound.length];
-        int k = 0;
-
-        for (int i = 0; i < this.segmentsFound.length; i++) {
-            if (isUnique(temp, k, this.segmentsFound[i])) {
-                temp[k++] = this.segmentsFound[i];
-            }
+        LineSegment[] result = new LineSegment[this.numberOfLineSegments];
+        for (int i = 0; i < this.numberOfLineSegments; i++) {
+            result[i] = this.segmentsFound[i];
         }
-        LineSegment[] result = new LineSegment[k];
-        for (int i = 0; i < k; i++) {
-            result[i] = temp[i];
-        }
-
         return result;
-    }
-
-    private boolean isUnique(LineSegment[] s, int len, LineSegment lineSegment) {
-        for (int i = 0; i < len; i++) {
-            if (lineSegment.toString().equals(s[i].toString())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
