@@ -34,6 +34,16 @@ public class NearestNeighborVisualizer {
 
         // process nearest neighbor queries
         StdDraw.enableDoubleBuffering();
+
+        // draw all of the points
+        // StdDraw.clear();
+        // StdDraw.setPenColor(StdDraw.BLACK);
+        // StdDraw.setPenRadius(0.01);
+        // brute.draw();
+
+        Point2D kP = null;
+        Point2D bP = null;
+
         while (true) {
 
             // the location (x, y) of the mouse
@@ -46,16 +56,27 @@ public class NearestNeighborVisualizer {
             StdDraw.setPenColor(StdDraw.BLACK);
             StdDraw.setPenRadius(0.01);
             brute.draw();
+            // if (kP != null && bP != null) {
+            //     StdDraw.setPenRadius(0.03);
+            //     StdDraw.setPenColor(StdDraw.BLACK);
+            //     bP.draw();
+            //     StdDraw.setPenRadius(0.02);
+            //     kP.draw();
+            // }
 
             // draw in red the nearest neighbor (using brute-force algorithm)
             StdDraw.setPenRadius(0.03);
             StdDraw.setPenColor(StdDraw.RED);
-            brute.nearest(query).draw();
+            // brute.nearest(query).draw();
+            bP = brute.nearest(query);
+            bP.draw();
             StdDraw.setPenRadius(0.02);
 
             // draw in blue the nearest neighbor (using kd-tree algorithm)
             StdDraw.setPenColor(StdDraw.BLUE);
-            kdtree.nearest(query).draw();
+            // kdtree.nearest(query).draw();
+            kP = kdtree.nearest(query);
+            kP.draw();
             StdDraw.show();
             StdDraw.pause(40);
         }
