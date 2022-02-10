@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Java Program",
+            "request": "launch",
+            "mainClass": "part-one.1.UnionFind",
+            "args": [
+                "input8-no.txt"
+            ],
+        },
+        {
+            "type": "java",
+            "name": "Launch UnionFind",
+            "request": "launch",
+            "mainClass": "UnionFind",
+            "projectName": "week-x_46bf5678"
+        },
+    ]
+}

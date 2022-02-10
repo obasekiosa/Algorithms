@@ -1,6 +1,5 @@
 *.zip
-/*/extras
-# *.class
-/*/*/.lift
-/*/*/.idea
+**/.class
 *.iml
+**/edu/**
+/extras/**

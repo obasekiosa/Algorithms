@@ -1,0 +1,22 @@
+{
+    "java.project.referencedLibraries": [
+        ".lift/**/*.jar",
+    ],
+
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true,
+        // "**/.idea": true,
+    },
+
+
+    "java.import.exclusions": [
+        "**/node_modules/**",
+        "**/.metadata/**",
+        "**/archetype-resources/**",
+        "**/META-INF/maven/**",
+        // "**/.idea/**"
+    ]
+}
