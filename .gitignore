@@ -1,5 +1,5 @@
 *.zip
 *.class
-*.iml
+# *.iml
 **/edu/**
 /extras/**
