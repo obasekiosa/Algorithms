@@ -1,3 +1,4 @@
+package part_one._1;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 

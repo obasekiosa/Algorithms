@@ -8,7 +8,7 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true,
-        // "**/.idea": true,
+        "**/.idea": true,
     },
 
 
@@ -18,5 +18,9 @@
         "**/archetype-resources/**",
         "**/META-INF/maven/**",
         // "**/.idea/**"
+    ],
+    "java.project.sourcePaths": [
+        "part-one/percolation",
+        ""
     ]
 }

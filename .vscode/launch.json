@@ -4,9 +4,9 @@
             "type": "java",
             "name": "Launch Java Program",
             "request": "launch",
-            "mainClass": "part-one.1.UnionFind",
+            "mainClass": "part_one._1.UnionFind",
             "args": [
-                "input8-no.txt"
+                "part_one/_1/input8-no.txt"
             ],
         },
         {
