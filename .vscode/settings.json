@@ -1,14 +1,19 @@
 {
-    "java.project.referencedLibraries": [
-        ".lift/**/*.jar",
-    ],
+    "java.project.referencedLibraries": {
+        "include": [
+            ".lift/**/*.jar",
+        ],
+        "exclude": [
+            ".idea/**"
+        ]
+    },
 
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true,
-        "**/.idea": true,
+        // "**/.idea": true,
     },
 
 
@@ -22,5 +27,11 @@
     "java.project.sourcePaths": [
         "part-one/percolation",
         ""
+    ],
+
+    "java.project.resourceFilters": [
+        "node_modules",
+        ".git",
+        ".idea"
     ]
 }

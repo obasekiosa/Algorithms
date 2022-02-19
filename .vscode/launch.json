@@ -16,5 +16,11 @@
             "mainClass": "UnionFind",
             "projectName": "week-x_46bf5678"
         },
+        {
+            "type": "java",
+            "name": "Launch WordNet",
+            "request": "launch",
+            "mainClass": "part_two._1.WordNet",
+        },
     ]
 }
