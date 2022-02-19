@@ -17,6 +17,7 @@ public class WordNet {
     private final HashMap<Synset, Integer> synsetToId;
     private final HashMap<Integer, Synset> idToSynset;
     private final HashSet<String> words;
+    private final SAP sap;
 
     private class Synset {
         private final HashSet<String> words;
@@ -129,6 +130,8 @@ public class WordNet {
 
         if (hasCycle(this.wordNet)) throw new IllegalArgumentException("Given digraph has cycles");
 
+        this.sap = new SAP(this.wordNet);
+
    }
 
 
@@ -186,7 +189,10 @@ public class WordNet {
         if (!this.words.contains(nounA) || !this.words.contains(nounB))
             throw new IllegalArgumentException();
 
-        return 0;
+        List<Integer> synsetA = getAllSynsetsThatContainNoun(nounA);
+        List<Integer> synsetB = getAllSynsetsThatContainNoun(nounB);
+
+        return this.sap.length(synsetA, synsetB);
     }
 
    // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
@@ -202,9 +208,8 @@ public class WordNet {
         List<Integer> synsetA = getAllSynsetsThatContainNoun(nounA);
         List<Integer> synsetB = getAllSynsetsThatContainNoun(nounB);
 
-        SAP sap = new SAP(this.wordNet);
 
-        int ancestor = sap.ancestor(synsetA, synsetB);
+        int ancestor = this.sap.ancestor(synsetA, synsetB);
 
         if (ancestor == -1) return null;
         
