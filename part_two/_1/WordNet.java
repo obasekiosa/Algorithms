@@ -168,12 +168,12 @@ public class WordNet {
         return word.trim().replace(" ", "_");
     }
 
-   // returns all WordNet nouns
+    // returns all WordNet nouns
     public Iterable<String> nouns() {
         return this.words;
     }
 
-   // is the word a WordNet noun?
+    // is the word a WordNet noun?
     public boolean isNoun(String word) {
         if (word == null)
             throw new IllegalArgumentException();
@@ -181,7 +181,7 @@ public class WordNet {
         return this.words.contains(replaceWhiteSpaceWithUnderscore(word));
     }
 
-   // distance between nounA and nounB 
+    // distance between nounA and nounB 
     public int distance(String nounA, String nounB) {
         if (nounA == null || nounB == null)
             throw new IllegalArgumentException();
@@ -195,8 +195,8 @@ public class WordNet {
         return this.sap.length(synsetA, synsetB);
     }
 
-   // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
-   // in a shortest ancestral path 
+    // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
+    // in a shortest ancestral path
     public String sap(String nounA, String nounB) {
         if (nounA == null || nounB == null)
             throw new IllegalArgumentException();
