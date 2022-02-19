@@ -1,9 +1,11 @@
 package part_two._1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedCycle;
@@ -17,16 +19,20 @@ public class WordNet {
     private final HashSet<String> words;
 
     private class Synset {
-        private final LinkedList<String> words;
+        private final HashSet<String> words;
         private final String definition;
 
         public Synset(Iterable<String> words, String definition) {
             if (words == null || definition == null) throw new IllegalArgumentException();
 
             this.definition = definition;
-            this.words = new LinkedList<>();
+            this.words = new HashSet<>();
             for (String word : words) 
                 this.words.add(word);
+        }
+
+        public boolean contains(String word) {
+            return this.words.contains(word);
         }
 
         @Override
@@ -60,7 +66,6 @@ public class WordNet {
         private WordNet getEnclosingInstance() {
             return WordNet.this;
         }
-
         
     }
 
@@ -185,18 +190,39 @@ public class WordNet {
     }
 
    // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
-   // in a shortest ancestral path (defined below)
+   // in a shortest ancestral path 
     public String sap(String nounA, String nounB) {
         if (nounA == null || nounB == null)
             throw new IllegalArgumentException();
 
         if (!this.words.contains(nounA) || !this.words.contains(nounB))
             throw new IllegalArgumentException();
+
+
+        List<Integer> synsetA = getAllSynsetsThatContainNoun(nounA);
+        List<Integer> synsetB = getAllSynsetsThatContainNoun(nounB);
+
+        SAP sap = new SAP(this.wordNet);
+
+        int ancestor = sap.ancestor(synsetA, synsetB);
+
+        if (ancestor == -1) return null;
         
-        return null;
+        return this.idToSynset.get(ancestor).words.toString();
     }
 
-   // do unit testing of this class
+    private List<Integer> getAllSynsetsThatContainNoun(String noun) {
+
+        noun = replaceWhiteSpaceWithUnderscore(noun);
+        List<Integer> synsets = new ArrayList<>();
+        for (Synset s : this.synsetToId.keySet()) {
+            if (s.contains(noun))
+                synsets.add(this.synsetToId.get(s));
+        }
+
+        return synsets;
+    }
+
     public static void main(String[] args) {
         WordNet driver = new WordNet("part_two/_1/synsets.txt", "part_two/_1/hypernyms.txt");
         // System.out.println(driver.nouns());
