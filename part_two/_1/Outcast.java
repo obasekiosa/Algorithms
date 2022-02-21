@@ -1,4 +1,4 @@
-// package part_two._1;
+package part_two._1;
 
 import edu.princeton.cs.algs4.In;
 
@@ -8,14 +8,7 @@ public final class Outcast {
     // constructor takes a WordNet object
     public Outcast(WordNet wordnet) {
         this.wordNet = wordnet;
-        // this.wordNet = new WordNet(wordnet);
     }
-
-    // public Outcast(Outcast outcast) {
-    //     if (outcast == null) throw new IllegalArgumentException();
-
-    //     this.wordNet = new WordNet(outcast.wordNet);
-    // }
 
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns) {
@@ -28,7 +21,6 @@ public final class Outcast {
             for (int k = 0; k < nouns.length; k++) {
                 if (k == i) continue;
                 int dist = this.wordNet.distance(nouns[i], nouns[k]);
-                // System.out.println(this.wordNet.sap(nouns[i], nouns[k]));
                 sum += dist;
             }
 

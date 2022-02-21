@@ -1,4 +1,4 @@
-// package part_two._1;
+package part_two._1;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +9,7 @@ import edu.princeton.cs.algs4.In;
 
 public class WordNet {
 
-    private final HashMap<Integer, Synset> idToSynset;
+    private final HashMap<Integer, String> idToSynset;
     private final HashMap<String, HashSet<Integer>> wordToId;
     private final SAP sap;
 
@@ -29,10 +29,11 @@ public class WordNet {
             String[] tokens = line.split(",");
             int id = Integer.parseInt(tokens[0]);
             
-            Synset synset = new Synset(tokens[1], tokens[2]);
+            String synset = tokens[1].trim();
+            String[] wordTokens = synset.split(" ");
 
             this.idToSynset.put(id, synset);
-            synset.words.forEach((w) -> {
+            for (String w : wordTokens) {
                 if (!this.wordToId.containsKey(w)) {
                     HashSet<Integer> idSet = new HashSet<>();
                     idSet.add(id);
@@ -40,7 +41,7 @@ public class WordNet {
                 } else {
                     this.wordToId.get(w).add(id);
                 }
-            });
+            }
             ++size;
         }
 
@@ -78,21 +79,9 @@ public class WordNet {
 
     }
 
-    // public WordNet(WordNet wordNet) {
-    //     this.idToSynset = new HashMap<>(wordNet.idToSynset.size());
-    //     for (Entry<Integer, Synset> e : wordNet.idToSynset.entrySet()) {
-    //         this.idToSynset.put(e.getKey(), e.getValue());
-    //     }
-
-    //     this.sap = new SAP(wordNet.sap);
-    //     this.words = new HashSet<>(wordNet.words); // strings are immutable by default
-    // }
-
-
 
     // returns all WordNet nouns
     public Iterable<String> nouns() {
-        // return this.words; // faster (constant time return)
         return this.wordToId.keySet();
     }
 
@@ -130,73 +119,9 @@ public class WordNet {
 
         if (ancestor == -1) return null;
 
-        return this.idToSynset.get(ancestor).combinedWords;
+        return this.idToSynset.get(ancestor);
     }
 
-    private class Synset {
-        private final HashSet<String> words;
-        private final String definition;
-        private final String combinedWords;
-
-        public Synset(String words, String definition) {
-            if (words == null || definition == null)
-                throw new IllegalArgumentException();
-
-            this.definition = definition;
-            this.combinedWords = words;
-
-            String[] wordTokens = words.trim().split(" ");
-            this.words = new HashSet<>();
-            for (String word : wordTokens)
-                this.words.add(word);
-        }
-
-        public Synset(Synset synset) {
-            if (synset == null)
-                throw new IllegalArgumentException();
-
-            this.words = new HashSet<>(synset.words);
-            this.definition = synset.definition;
-            this.combinedWords = synset.combinedWords;
-        }
-
-        public boolean contains(String word) {
-            return this.words.contains(word);
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + getEnclosingInstance().hashCode();
-            result = prime * result + ((words == null) ? 0 : words.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Synset other = (Synset) obj;
-            if (!getEnclosingInstance().equals(other.getEnclosingInstance()))
-                return false;
-            if (words == null) {
-                if (other.words != null)
-                    return false;
-            } else if (!words.equals(other.words))
-                return false;
-            return true;
-        }
-
-        private WordNet getEnclosingInstance() {
-            return WordNet.this;
-        }
-
-    }
 
     public static void main(String[] args) {
         WordNet driver = new WordNet("part_two/_1/synsets.txt", "part_two/_1/hypernyms.txt");
