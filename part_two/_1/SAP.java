@@ -1,4 +1,4 @@
-// package part_two._1;
+package part_two._1;
 
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
@@ -15,12 +15,6 @@ public class SAP {
         if (G == null) throw new IllegalArgumentException("Null Argument passed. Digraph can not be null");
         this.digraph = new Digraph(G);
     }
-
-    // public SAP(SAP sap) {
-    //     if (sap == null) throw new IllegalArgumentException();
-
-    //     this.digraph = new Digraph(sap.digraph);
-    // }
 
     private int[] sap(int v, int w) {
 
