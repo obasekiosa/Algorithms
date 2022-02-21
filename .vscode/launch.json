@@ -6,7 +6,7 @@
             "request": "launch",
             "mainClass": "part_one._1.UnionFind",
             "args": [
-                "part_one/_1/input8-no.txt"
+                "extras/part_one/_1/input8-no.txt"
             ],
         },
         {
@@ -35,7 +35,7 @@
             "request": "launch",
             "mainClass": "part_two._1.SAP",
             "args": [
-                "part_two/_1/digraph25.txt"
+                "extras/part_two/_1/digraph25.txt"
             ],
         },
         {
@@ -44,7 +44,7 @@
             "request": "launch",
             "mainClass": "part_two._1.SAP",
             "args": [
-                "part_two/_1/digraph13.txt"
+                "extras/part_two/_1/digraph13.txt"
             ],
         },
 
@@ -55,11 +55,11 @@
             "request": "launch",
             "mainClass": "part_two._1.Outcast",
             "args": [
-                "part_two/_1/synsets.txt",
-                "part_two/_1/hypernyms.txt",
-                "part_two/_1/outcast5.txt",
-                "part_two/_1/outcast8.txt",
-                "part_two/_1/outcast11.txt",
+                "extras/part_two/_1/synsets.txt",
+                "extras/part_two/_1/hypernyms.txt",
+                "extras/part_two/_1/outcast5.txt",
+                "extras/part_two/_1/outcast8.txt",
+                "extras/part_two/_1/outcast11.txt",
             ],
         },
     ]
