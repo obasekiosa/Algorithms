@@ -16,11 +16,51 @@
             "mainClass": "UnionFind",
             "projectName": "week-x_46bf5678"
         },
+
+
+
+
+        // Part Two
         {
             "type": "java",
             "name": "Launch WordNet",
             "request": "launch",
             "mainClass": "part_two._1.WordNet",
+        },
+
+        // SAP
+        {
+            "type": "java",
+            "name": "Launch SAP Diagraph25",
+            "request": "launch",
+            "mainClass": "part_two._1.SAP",
+            "args": [
+                "part_two/_1/digraph25.txt"
+            ],
+        },
+        {
+            "type": "java",
+            "name": "Launch SAP Digraph13",
+            "request": "launch",
+            "mainClass": "part_two._1.SAP",
+            "args": [
+                "part_two/_1/digraph13.txt"
+            ],
+        },
+
+        // Outcasts
+        {
+            "type": "java",
+            "name": "Launch Outcast",
+            "request": "launch",
+            "mainClass": "part_two._1.Outcast",
+            "args": [
+                "part_two/_1/synsets.txt",
+                "part_two/_1/hypernyms.txt",
+                "part_two/_1/outcast5.txt",
+                "part_two/_1/outcast8.txt",
+                "part_two/_1/outcast11.txt",
+            ],
         },
     ]
 }
